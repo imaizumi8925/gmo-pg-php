@@ -3314,4 +3314,45 @@ class ShopApi extends Api {
     return $this->callApi('unbookSalesProcess', $data);
   }
 
+
+  /**
+   * 取引登録
+   */
+  public function entryTranVirtualaccount($order_id, $amount, $tax = 0) {
+    $data = array(
+      'order_id' => $order_id,
+      'amount'   => $amount,
+      'tax'      => $tax,
+    );
+    return $this->callApi('entryTranVirtualaccount', $data);
+  }
+
+  /**
+   * 取引登録
+   */
+  public function execTranVirtualaccount($access_id, $access_pass, $order_id, $data = array()) {
+    // Disable shop id and shop pass.
+    if (!is_array($data)) {
+      $data = array();
+    }
+    $data['access_id']        = $access_id;
+    $data['access_pass']      = $access_pass;
+    $data['order_id']         = $order_id;
+    return $this->callApi('execTranVirtualaccount', $data);
+  }
+
+  /**
+   * 取引登録
+   */
+  public function inquiryVirtualaccountTransfer($access_id, $access_pass, $order_id, $data = array()) {
+    // Disable shop id and shop pass.
+    if (!is_array($data)) {
+      $data = array();
+    }
+    $data['access_id']        = $access_id;
+    $data['access_pass']      = $access_pass;
+    $data['order_id']         = $order_id;
+    return $this->callApi('inquiryVirtualaccountTransfer', $data);
+  }
+
 }

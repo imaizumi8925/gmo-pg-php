@@ -136,6 +136,18 @@ class Api {
     'jcbPrecaBalanceInquiry'        => 'JcbPrecaBalanceInquiry.idPass',
     'jcbPrecaCancel'                => 'JcbPrecaCancel.idPass',
     'searchTradeMulti'              => 'SearchTradeMulti.idPass',
+    // 取引登録
+    'entryTranVirtualaccount' => 'EntryTranVirtualaccount.idPass',
+    // 決済実行
+    'execTranVirtualaccount' => 'ExecTranVirtualaccount.idPass',
+    // 継続口座割当
+    'assignVirtualaccount' => 'AssignVirtualaccount.idPass',
+    // 継続口座解除
+    'freeVirtualaccount' => 'FreeVirtualaccount.idPass',
+    // 専有口座一覧取得
+    'listVirtualaccount' => 'ListVirtualaccount.idPass',
+    // 専有口座入金履歴取得
+    'inquiryVirtualaccountTransfer' => 'InquiryVirtualaccountTransfer.idPass',
   );
 
   /**
@@ -205,14 +217,17 @@ class Api {
     'client_field_1' => array(
       'key' => 'ClientField1',
       'max-length' => 100,
+      'encode' => TRUE,
     ),
     'client_field_2' => array(
       'key' => 'ClientField2',
       'max-length' => 100,
+      'encode' => TRUE,
     ),
     'client_field_3' => array(
       'key' => 'ClientField3',
       'max-length' => 100,
+      'encode' => TRUE,
     ),
     'client_field_flag' => array(
       'key' => 'ClientFieldFlag',
@@ -587,6 +602,59 @@ class Api {
     'version' => array(
       'key' => 'Version',
     ),
+    'trade_days' => array(
+      'key' => 'TradeDays',
+      'max-length' => 2,
+      'integer' => TRUE,
+    ),
+    'trade_reason' => array(
+      'key' => 'TradeReason',
+      'max-length' => 64,
+      'encode' => TRUE,
+    ),
+    'trade_client_name' => array(
+      'key' => 'TradeClientName',
+      'max-length' => 64,
+      'encode' => TRUE,
+    ),
+    'trade_client_mailaddress' => array(
+      'key' => 'TradeClientMailaddress',
+      'max-length' => 256,
+    ),
+    'bank_code' => array(
+      'key' => 'BankCode',
+      'max-length' => 4,
+    ),
+    'bank_name' => array(
+      'key' => 'BankName',
+      'max-length' => 30,
+      'encode' => TRUE,
+    ),
+    'branch_code' => array(
+      'key' => 'BranchCode',
+      'max-length' => 4,
+    ),
+    'branch_name' => array(
+      'key' => 'BranchName',
+      'max-length' => 30,
+      'encode' => TRUE,
+    ),
+    'account_type' => array(
+      'key' => 'AccountType',
+      'max-length' => 1,
+    ),
+    'account_number' => array(
+      'key' => 'AccountNumber',
+      'max-length' => 7,
+    ),
+    'available_date' => array(
+      'key' => 'AvailableDate',
+      'max-length' => 8,
+    ),
+    'trade_code' => array(
+      'key' => 'TradeCode',
+      'max-length' => 7,
+    ),
   );
 
   /**
@@ -648,6 +716,18 @@ class Api {
     'TranDate'             => 'tran_date',
     'TranID'               => 'tran_id',
     'TransactionId'        => 'transaction_id',
+    'TradeDays'            => 'trade_days',
+    'TradeReason'          => 'trade_reason',
+    'TradeClientName'      => 'trade_client_name',
+    'TradeClientMailaddress' => 'trade_client_mailaddress',
+    'BankCode'             => 'bank_code',
+    'BankName'             => 'bank_name',
+    'BranchCode'           => 'branch_code',
+    'BranchName'           => 'branch_name',
+    'AccountType'          => 'account_type',
+    'AccountNumber'        => 'account_number',
+    'AvailableDate'        => 'available_date',
+    'TradeCode'            => 'trade_code',
   );
 
   /**
@@ -849,6 +929,7 @@ class Api {
    * Process curl response before return callback.
    */
   public static function processResponse($response) {
+    $mapping = self::$inputParams;
     // mb_convert_encoding($value, 'UTF-8', 'SJIS');
     parse_str($response, $data);
     // API error or success.
@@ -861,6 +942,11 @@ class Api {
       foreach ($data as $key => $value) {
         if (isset(self::$outputParams[$key])) {
           $key = self::$outputParams[$key];
+        }
+        if (isset($mapping[$key])) {
+          if (isset($mapping[$key]['encode']) && $mapping[$key]['encode'] === TRUE) {
+            $value = mb_convert_encoding($value, 'UTF-8', 'SJIS');
+          }
         }
         $result[$key] = $value;
       }
