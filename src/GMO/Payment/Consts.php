@@ -13,6 +13,22 @@ namespace GMO\Payment;
 class Consts {
 
   /**
+   * Get error message string.
+   */
+  public static function getErrorMessageStr($result) {
+    $str = '';
+    if (isset($result['ErrInfo'])) {
+        $str = self::getErrorMessage($result['ErrInfo']);
+    } else {
+        foreach ($result as $error) {
+            if (isset($error['ErrInfo'])) $str .= self::getErrorMessage($error['ErrInfo'])."\n";
+        }
+    }
+    return trim($str);
+  }
+
+
+  /**
    * Get error message.
    */
   public static function getErrorMessage($error_info) {
