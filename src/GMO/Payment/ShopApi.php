@@ -3355,4 +3355,28 @@ class ShopApi extends Api {
     return $this->callApi('inquiryVirtualaccountTransfer', $data);
   }
 
+  // 銀行振込(バーチャル口座 あおぞら)
+  /**
+   * 取引登録 : オーダーIDを指定して取引を登録します。
+   */
+  public function entryTranGANB($order_id, $amount, $tax = 0) {
+    $data = array(
+      'order_id' => $order_id,
+      'amount'   => $amount,
+      'tax'      => $tax,
+    );
+    return $this->callApi('entryTranGANB', $data);
+  }
+  /**
+   * 取引実行 : 登録された取引に対してバーチャル口座を発行します。
+   */
+  public function execTranGANB($access_id, $access_pass, $order_id, $data = array()) {
+    if (!is_array($data)) {
+      $data = array();
+    }
+    $data['access_id']        = $access_id;
+    $data['access_pass']      = $access_pass;
+    $data['order_id']         = $order_id;
+    return $this->callApi('execTranGANB', $data);
+  }
 }

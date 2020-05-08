@@ -136,6 +136,8 @@ class Api {
     'jcbPrecaBalanceInquiry'        => 'JcbPrecaBalanceInquiry.idPass',
     'jcbPrecaCancel'                => 'JcbPrecaCancel.idPass',
     'searchTradeMulti'              => 'SearchTradeMulti.idPass',
+
+    // 銀行振込(バーチャル口座)
     // 取引登録
     'entryTranVirtualaccount' => 'EntryTranVirtualaccount.idPass',
     // 決済実行
@@ -148,6 +150,18 @@ class Api {
     'listVirtualaccount' => 'ListVirtualaccount.idPass',
     // 専有口座入金履歴取得
     'inquiryVirtualaccountTransfer' => 'InquiryVirtualaccountTransfer.idPass',
+
+    // 銀行振込(バーチャル口座 あおぞら)
+    // 取引登録 : オーダーIDを指定して取引を登録します。
+    'entryTranGANB' => 'EntryTranGANB.idPass',
+    // 取引実行 : 登録された取引に対してバーチャル口座を発行します。
+    'execTranGANB' => 'ExecTranGANB.idPass',
+    // 取引停止 : 取引を停止し、バーチャル口座を削除します。
+    'cancelTranGANB' => 'CancelTranGANB.idPass',
+    // 入金履歴情報取得 : 指定された取引のバーチャル口座に対する入金情報を返却します。
+    'inquiryTransferGANB' => 'InquiryTransferGANB.idPass',
+    // 取引状態参照 : 指定された取引の状態を返却します。
+    'searchTradeMulti' => 'SearchTradeMulti.idPass',
   );
 
   /**
@@ -655,6 +669,11 @@ class Api {
       'key' => 'TradeCode',
       'max-length' => 7,
     ),
+    'account_holder_number' => array(
+      'key' => 'AccountHolderName',
+      'max-length' => 30,
+      'encode' => TRUE,
+    ),
   );
 
   /**
@@ -728,6 +747,7 @@ class Api {
     'AccountNumber'        => 'account_number',
     'AvailableDate'        => 'available_date',
     'TradeCode'            => 'trade_code',
+    'AccountHolderName'    => 'account_holder_number',
   );
 
   /**
